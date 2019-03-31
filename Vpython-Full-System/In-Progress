@@ -1,2 +1,80 @@
 #preliminary code
 
+SolRad = 695500/(1.496*10**8) #km--AU
+JupRad = 69911/(1.496*10**8) #km--AU
+#--------------------------------------------------------
+#START VPYTHON INSTANTIATION
+#--------------------------------------------------------
+from vpython import *
+scene = display(title="Jupiter-Sun Lagrange Points", width=6,height=6)
+points = []
+paths = []
+jv = 2.77E-15 / 3.17098E-8 #AU/s
+j=5
+JupiVel = jv
+Sol = sphere(pos=vec(-r1,0,0), radius=.1, color=color.yellow, mass = m1)
+attach_trail(Sol)
+Sol.velocity = vector(jv,jv,0)
+#Sol.velocity = paths.ellipse(pos=vec(-r1,0,0), width=r2, height=(r2+r1))
+
+Jupi = sphere(pos=vec(r2,0,0), radius=.1, color=color.orange, mass = m2)
+attach_trail(Jupi)
+Jupi.velocity = vector(0,0,0)
+
+L1point = sphere(pos=vec(L1,0,0), radius=.1, color=color.red, mass = 1)
+attach_trail(L1point)
+L1point.velocity = vector(jv,jv,0)
+#L1point.velocity = paths.circle(radius=L1, np=64, pos = vec(L1,0,0))
+
+L2point = sphere(pos=vec(L2,0,0), radius=.1,  color=color.red, mass = 1)
+attach_trail(L2point)
+L2point.velocity = vector(-jv,-jv,0)
+#L2point.velocity = paths.circle(radius=L2, np=64, pos=vec(L2,0,0))
+                                
+L3point = sphere(pos=vec(L3,0,0), radius=.1, color=color.red, mass = 1)
+attach_trail(L3point)
+L3point.velocity = vector(jv,jv,0)
+#L3point.velocity = paths.ellipse(width=L3, height=r2, pos=vec(L3,0,0))
+
+L4point = sphere(pos=vec(L4x,L4y,0), radius=.1, color=color.red, mass = 1)
+attach_trail(L4point)
+L4point.velocity = vector(jv,jv,0)
+#L4point.velocity = paths.ellipse(width=L4x, height=L4y, pos=vec(L4x,L4y,0))
+
+L5point = sphere(pos=vec(L5x,L5y,0), radius=.1, color=color.red, mass = 1)
+attach_trail(L5point)
+L5point.velocity = vector(-jv,-jv,0)
+#L5point.velocity = paths.ellipse(width=L5x, height=L5y, pos=vec(L5x,L5y,0))
+
+points.extend((Sol,Jupi,L1point, L2point, L3point, L4point, L5point))
+paths.extend((Sol.velocity,L1point.velocity, L2point.velocity, L3point.velocity, L4point.velocity, L5point.velocity))
+
+dt=(int(Year/60))
+t=0
+
+
+def gravAcc(obj, other):
+    """ acceleration of an object due to gravitational force """
+    rVector = obj.pos - other.pos
+    acc = -((G * other.mass) / rVector.mag2 )
+    acc *= rVector.norm()
+    return acc
+
+
+while t < 12 * 3E7: # 12 years in s
+    rate((12*3.15E7)/60)
+    for point1 in points:
+        for point2 in points:
+            if point1 != point2:
+                point1.velocity += gravAcc(point1, point2) * dt
+    
+    for point in points:
+        point.trail = curve(color=point.color)
+
+    for point in points:
+        point.pos += point.velocity * dt
+        
+    for point in points: 
+        point.trail.append(pos=point.pos)
+    
+    t+= dt
