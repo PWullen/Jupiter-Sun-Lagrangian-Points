@@ -1,0 +1,40 @@
+#preliminary
+
+from vpython import *
+scene = display(title="Jupiter-Sun Lagrange Points zoom", width=1, height=1, visible = True)
+JupRad = 69911/(1.496*10**8) #km--AU
+points = []
+jv = 2.77E-15 / 3.17098E-8 #AU/s
+j=5
+JupiVel = jv
+Jupi = sphere(pos=vec(0,0,0), radius=.0003, color=color.orange)
+#attach_trail(Jupi)
+#Jupi.velocity = vector(0,0,0)
+
+L1point = sphere(pos=vec(r2-L1,0,0), radius=.0003, color=color.red)
+attach_trail(L1point)
+#L1point.velocity = vector(jv,jv,0)
+#L1point.velocity = paths.circle(radius=L1, np=64, pos = vec(L1,0,0))
+
+L2point = sphere(pos=vec(L2-r2,0,0), radius=.0003,  color=color.red)
+attach_trail(L2point)
+#L2point.velocity = vector(-jv,-jv,0)
+#L2point.velocity = paths.circle(radius=L2, np=64, pos=vec(L2,0,0))
+
+points.extend((Jupi, L1point, L2point))
+dt=(12*3.15E7)/60
+t=0
+#print(JupRad)
+for point in points:
+    point.trail = curve(color=point.color)
+
+while t < 12 * 3.154E7: # 12 years in s
+    rate((12*3.15E7)/60)
+    
+    for point in points:
+        point.pos += path.pos * dt
+        
+    for point in points: 
+        point.trail.append(pos=point.pos)
+    
+    t+= dt
