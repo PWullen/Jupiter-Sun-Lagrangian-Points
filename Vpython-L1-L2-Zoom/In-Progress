@@ -1,5 +1,5 @@
 #preliminary
-
+import numpy as np
 from vpython import *
 scene = display(title="Jupiter-Sun Lagrange Points zoom", width=1, height=1, visible = True)
 JupRad = 69911/(1.496*10**8) #km--AU
