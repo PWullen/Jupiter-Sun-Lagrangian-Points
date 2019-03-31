@@ -1,0 +1,15 @@
+#Jupiter-Sun Equipotential Contour Plots
+import numpy as np
+import matplotlib.pyplot as plt
+JUPx = np.linspace(-5.2,5.2,50)
+JUPy = np.linspace(-5.2,5.2,50)
+X, Y = np.meshgrid(JUPx,JUPy)
+def f(x, y):
+    return np.sqrt(x*x + y*y)
+Z = f(X,Y)
+plt.contour(X,Y,Z)
+plt.gca().set_aspect('equal', adjustable='box')
+plt.show()
+plt.title("Centrifugal-Potential at Jupter Radius (AU)")
+plt.xlabel("X axis (AU)")
+plt.ylabel("Y axis (AU)")
