@@ -1,0 +1,37 @@
+SUNmass = 1.989*10**30 #kg 
+JUPmass = 1.898*10**27 #kg
+JupSunDist = (790 * 10**6)/(1.496*10**8)  #AU
+GravPot = (6.67 * 10**-11) * ((2.98E-34)) #AU^3 kg^-1 s^-2
+m1 =SUNmass
+m2 = JUPmass
+G = GravPot
+a = JupSunDist
+r1 = a*((JUPmass)/(JUPmass+SUNmass)) #Sun barycenter AU
+r2 = (a -r1)  #Jup barycenter AU
+R = -r1+r2 #AU
+Omega = np.sqrt((G*(m1+m2))/(R**3)) #Frequency
+Year = (2*np.pi)/(Omega) #Revolution in seconds
+print("The Sun's barycenter is", r1, "AU")
+print("Jupiter's barycenter is", r2, "AU")
+print("The distance between the two bodies is",R, "AU")
+print("The angular velocity about the center of mass is", Omega, "s^-1")
+print("The revolution time is", Year/(3.154E7), "Julian years")
+
+---------------------------------------------------------------------------------------
+
+alpha = (m2)/(m1+m2)
+beta= (m1)/(m1+m2)
+L1 = R*(1-(alpha/3)**1/3)
+L2 = R*(1+(alpha/3)**1/3)
+L3 = -R*(1+((5*alpha)/12))
+L4x = (R/2)*((m1-m2)/(m1+m2))
+L4y = (np.sqrt(3)/2)*R
+L5x = (R/2)*((m1-m2)/(m1+m2))
+L5y = (-np.sqrt(3)/2)*R
+print("The Jupiter-Sun L1 point is at", L1, "AU")
+print("The Jupiter-Sun L2 point is at", L2, "AU")
+print("The Jupiter-Sun L3 point is at", L3, "AU")
+print("The Jupiter-Sun L4(x,y) points are at", L4x, L4y, "AU")
+print("The Jupiter-Sun L5(x,y) points are at", L5x, L5y, "AU")
+print("Distance between L1 and Jup is", r2-L1, "AU")
+print ("Distance between L2 and Jup is", L2-r2, "AU")
